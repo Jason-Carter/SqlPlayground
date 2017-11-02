@@ -144,3 +144,20 @@ SELECT tablename,
 ORDER BY 2 DESC
 
 
+
+-- Check the last value of self incrementing columns
+-- Need to ensure it isn't approaching the max value
+-- TODO: Add max value to the query, and show percentage used
+SELECT		s.name		as SchemaName,
+		o.name		as TableName,
+		ic.name		as ColumnName,
+		ic.seed_value,
+		ic.increment_value,
+		ic.last_value
+		--ic.system_type_id,
+		--ic.user_type_id
+FROM		sys.identity_columns	ic
+inner join	sys.objects		o	on o.object_id = ic.object_id and o.type = 'U'
+inner join	sys.schemas		s	on s.schema_id = o.schema_id
+order by	ic.last_value desc
+
